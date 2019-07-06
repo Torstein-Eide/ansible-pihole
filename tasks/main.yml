@@ -1,2 +1,46 @@
 ---
 # tasks file for ansible-pihole
+- name: Check if pihole Service Exists
+  stat:
+   path: /etc/init.d/pihole-FTL
+  register: service_status
+
+- name: pihole folder
+  file:
+   path: "{{ pihole_folder }}"
+   state: directory
+
+- name: move pihole conf files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ pihole_folder }}"
+    owner: root
+    mode: 644
+  with_fileglob:
+    - pihole/*
+  notify: pihole-FTL Reload service
+
+
+- name: install pihole
+  command: curl -L https://install.pi-hole.net | bash /dev/stdin --unattended
+  when: service_status.stat.exists == false
+
+- name: move dnsmasq conf files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ dnsmasq_folder }}"
+    owner: root
+    mode: 644
+  with_fileglob:
+    - dnsmasq.d/*.conf
+  notify: pihole-FTL Reload service
+
+- name: Enable and stared service pihole
+  service:
+    name: pihole-FTL
+    enabled: yes
+    state: started
+
+- name: "Setting hostname to 'pihole'"
+  hostname:
+    name: pihole

@@ -1,2 +1,4 @@
 ---
 # defaults file for ansible-pihole
+dnsmasq_folder: /etc/dnsmasq.d/
+pihole_folder: /etc/pihole
