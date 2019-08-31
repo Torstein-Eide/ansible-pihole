@@ -20,10 +20,17 @@
     - pihole/*
   notify: pihole-FTL Reload service
 
-
-- name: install pihole
-  command: curl -L https://install.pi-hole.net | bash /dev/stdin --unattended
+- name: Download pihole-basic-install.sh
+  get_url:
+    url: https://install.pi-hole.net
+    dest: /tmp/pihole-basic-install.sh
+    mode: '0555'
   when: service_status.stat.exists == false
+
+- name: install pihole 
+  command:  bash /tmp/pihole-basic-install.sh --unattended
+  when: service_status.stat.exists == false
+
 
 - name: move dnsmasq conf files
   copy:
