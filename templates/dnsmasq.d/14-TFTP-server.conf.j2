@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+
+
+{% if pihole_DNSmasq_TFTP_State == True %}
+enable-tftp
+tftp-root={{ pihole_DNSmasq_TFTP_Path }}
+{%endif%}

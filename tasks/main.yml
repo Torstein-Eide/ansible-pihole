@@ -5,20 +5,25 @@
    path: /etc/init.d/pihole-FTL
   register: service_status
 
-- name: pihole folder
-  file:
-   path: "{{ pihole_folder }}"
-   state: directory
+- name: User for pihole
+  user:
+    name: "{{pihole_user}} "
+    comment: User for pihole
+    shell: "/usr/sbin/nologin"
+    state: present 
+    system: True
+    local: True 
+    
 
-- name: move pihole conf files
-  copy:
-    src: "{{ item }}"
-    dest: "{{ pihole_folder }}"
-    owner: root
-    mode: 644
-  with_fileglob:
-    - pihole/*
-  notify: pihole-FTL Reload service
+- name: pihole folders 
+  file:
+   path: "{{ item }}"
+   state: directory
+   owner:  "{{pihole_user}}"
+   group:  "{{pihole_user}}" 
+  with_items: 
+   - "{{ dnsmasq_folder }}"
+   - "{{ pihole_folder }}"
 
 - name: Download pihole-basic-install.sh
   get_url:
@@ -31,15 +36,28 @@
   command:  bash /tmp/pihole-basic-install.sh --unattended
   when: service_status.stat.exists == false
 
+- name: Configuration {{ pihole_folder }} templates
+  template:
+    src: "pihole/{{ item.SRC }}"
+    dest:  "{{ pihole_folder }}/{{ item.DST }}"
+    mode:  0644
+    owner:  root
+    group:  root
+  tags:
+    - config
+  with_items: " {{ Pihole_folder_templates }} "
+  notify: pihole-FTL Reload service
 
-- name: move dnsmasq conf files
-  copy:
-    src: "{{ item }}"
-    dest: "{{ dnsmasq_folder }}"
-    owner: root
-    mode: 644
-  with_fileglob:
-    - dnsmasq.d/*.conf
+- name: Configuration {{ dnsmasq_folder }} templates
+  template:
+    src: "dnsmasq.d/{{ item.SRC }}"
+    dest:  "{{ dnsmasq_folder }}/{{ item.DST }}"
+    mode:  0644
+    owner:  root
+    group:  root
+  tags:
+    - config
+  with_items: " {{ Pihole_dnsmasq_folder_templates }} "
   notify: pihole-FTL Reload service
 
 - name: Enable and stared service pihole
@@ -48,6 +66,9 @@
     enabled: yes
     state: started
 
-- name: "Setting hostname to 'pihole'"
-  hostname:
-    name: pihole
+- name: "Use local DNS "
+  lineinfile:
+    path: /etc/resolv.conf
+    regexp: '#?name_servers'
+    line: 'name_servers=127.0.0.1'
+ 

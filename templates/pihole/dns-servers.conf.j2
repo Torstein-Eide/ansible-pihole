@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+{% for LIST in pihole_remote_dns_servers_UI %}
+{{ LIST }}
+{% endfor %}
+{% for LIST in pihole_remote_dns_servers_UI_extra %}
+{{ LIST }}
+{% endfor %}
