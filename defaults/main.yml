@@ -18,6 +18,11 @@ Pihole_dnsmasq_folder_templates:
 ### Pihole settings 
 pihole_WEBPASSWORD: []
 pihole_CONDITIONAL_FORWARDING: false
+pihole_REV_SERVER: true
+pihole_REV_SERVER_CIDR: "192.168.0.0/24"
+pihole_REV_SERVER_TARGET: "192.168.0.1"
+pihole_REV_SERVER_DOMAIN: "local"
+
 pihole_ADMIN_EMAIL: admin@example.com
 pihole_WEBUIBOXEDLAYOUT: boxed
 pihole_WEBTHEME: default-dark
