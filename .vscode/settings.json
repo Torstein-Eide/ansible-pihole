@@ -1,0 +1,23 @@
+{
+    "cSpell.words": [
+        "adlist",
+        "crashlytics",
+        "dhcp",
+        "dnsmasq",
+        "dnssec",
+        "enabled",
+        "folder",
+        "gstatic",
+        "leasetime",
+        "lighttpd",
+        "list",
+        "pihole",
+        "taboola",
+        "webtheme",
+        "webuiboxedlayout"
+    ],
+    "cSpell.ignoreWords": [
+        "hurdleyreer",
+        "mqtt"
+    ]
+}
