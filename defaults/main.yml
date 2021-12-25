@@ -52,7 +52,6 @@ pihole_PIHOLE_DNS:
 pihole_DNS_FQDN_REQUIRED: true
 pihole_DNS_BOGUS_PRIV: true
 pihole_DNSSEC: true
-pihole_REV_SERVER: false
 pihole_BLOCKING_ENABLED: true
 
 pihole_adlist_list:
@@ -89,3 +88,4 @@ pihole_DNSmasq_Site:
 pihole_DNSmasq_TFTP_State: False
 pihole_DNSmasq_TFTP_Path: /dev/null
 
+pihole_DNSmasq_DHCP: []

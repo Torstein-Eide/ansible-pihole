@@ -4,16 +4,25 @@
   stat:
    path: /etc/init.d/pihole-FTL
   register: service_status
+  tags:
+    - config
+
+- name: 'linux : install libuser'
+  become: true
+  package:
+    name: libuser
+
 
 - name: User for pihole
   user:
-    name: "{{pihole_user}} "
+    name: "{{pihole_user}}"
     comment: User for pihole
     shell: "/usr/sbin/nologin"
     state: present 
     system: True
     local: True 
-    
+  tags:
+    - config   
 
 - name: pihole folders 
   file:
@@ -24,6 +33,7 @@
   with_items: 
    - "{{ dnsmasq_folder }}"
    - "{{ pihole_folder }}"
+
 
 - name: Download pihole-basic-install.sh
   get_url:
@@ -65,10 +75,21 @@
     name: pihole-FTL
     enabled: yes
     state: started
+  tags:
+    - config
 
 - name: "Use local DNS "
   lineinfile:
     path: /etc/resolv.conf
     regexp: '#?name_servers'
     line: 'name_servers=127.0.0.1'
- 
+  tags:
+    - config 
+
+- name: Pihole check for version
+  command: "/opt/pihole/update.sh --check-only | grep \"update available\""
+  register: pihole_version
+  when: service_status.stat.exists == true
+  tags:
+    - config
+    - setup
