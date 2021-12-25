@@ -1,5 +1,24 @@
 ---
 - hosts: localhost
-  remote_user: root
   roles:
     - ansible-pihole
+  vars:
+    pihole_CONDITIONAL_FORWARDING: false
+    pihole_ADMIN_EMAIL: eideen@example.com
+    pihole_WEBUIBOXEDLAYOUT: boxed
+    pihole_WEBTHEME: default-dark
+    pihole_PIHOLE_DOMAIN: example.com
+
+    pihole_INSTALL_WEB_SERVER: false
+    pihole_INSTALL_WEB_INTERFACE: false
+    pihole_LIGHTTPD_ENABLED: false
+    pihole_CACHE_SIZE: 40000
+    pihole_DNSMASQ_LISTENING: all
+    pihole_PIHOLE_DNS:
+      - 1.0.0.1
+    pihole_DNSmasq_Global:
+      - address=/pihole.example.com/pihole-s1.example.com/192.168.2.6
+    pihole_DNSmasq_Site:
+      - srv-host=_apt_proxy._tcp.example.com,server2.example.com,3142
+    pihole_DNSmasq_DHCP:
+      - dhcp-option=option:ntp-server,192.168.2.1
