@@ -14,6 +14,7 @@ Pihole_dnsmasq_folder_templates:
  - { SRC: 12-Ansible_site.conf.j2,  DST: 12-Ansible_site.conf   }
  - { SRC: 13-DHCP-server.conf.j2,   DST: 13-DHCP-server.conf    }
  - { SRC: 14-TFTP-server.conf.j2,   DST: 14-TFTP-server.conf    }
+ - { SRC: 15-Ansible_sshps.conf.j2, DST: 15-Ansible_sshps.conf  }
  
 ### Pihole settings 
 pihole_WEBPASSWORD: []

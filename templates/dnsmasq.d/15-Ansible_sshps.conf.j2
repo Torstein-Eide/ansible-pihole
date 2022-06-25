@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+
+
+{% if pihole_sshps is defined %}
+{% for LIST in pihole_sshps %}
+{{ LIST }}
+{% endfor %}
+{%endif%}
